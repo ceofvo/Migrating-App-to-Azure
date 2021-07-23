@@ -32,9 +32,13 @@ def main(msg: func.ServiceBusMessage):
         notification_status = 'Notified {} attendees'.format(len(attendees))
         
         # TODO: Update the notification table by setting the completed date and updating the status with the total number of attendees notified
-        update_query = cursor.execute("UPDATE notification SET status = '{}', completed_date = '{}' WHERE id = {};".format(notification_status, notification_completed_date, notification_id))        
+        logging.info('Updating database...')
+        cursor.execute("UPDATE notification SET status = '{}', completed_date = '{}' WHERE id = {};".format(notification_status, notification_completed_date, notification_id)) 
+        
+        #update_query = cursor.execute("UPDATE notification SET status = '{}', completed_date = '{}' WHERE id = {};".format(notification_status, notification_completed_date, notification_id)      
 
         connection.commit()
+        logging.info('Database update complete')
 
     except (Exception, psycopg2.DatabaseError) as error:
         logging.error(error)
